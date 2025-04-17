@@ -1,0 +1,50 @@
+"""Tests for the {{ package_name }} database connections"""
+
+import pytest
+{% if AddSQLAlchemy %}
+import sqlalchemy
+from sqlalchemy import create_engine
+{% endif %}
+
+#### Parameters
+dbtype_list = [
+{% if AddSQLite %}
+"sqlite", 
+{% endif %}
+{% if AddPostgres %}
+"postgres",
+{% endif %}
+]
+
+
+@pytest.fixture(params=dbtype_list)
+def dbtype(request):
+    return request.param
+
+
+{% if AddSQLAlchemy %}
+@pytest.fixture(params=dbtype_list)
+def testengine(request):
+    if request.param in ['sqlite','duckdb']:
+        url= "{request.param}:///_test_{{package_name}}.{request.param}.db"
+    elif request.param =='postgres:
+        url= "postgresql+psycopg2://postgres@localhost:5432/_test_{{package_name}}"
+    else:
+        url= "{request.param}:///_test_{{package_name}}.{request.param}"
+    return create_engine(url)
+
+{% endif %}
+
+
+##############
+
+#### Tests
+{% if AddSQLAlchemy %}
+def test_connect(testengine):
+    with testengine.connect() as conn:
+        result=conn.execute(text("SELECT 'engine_works';"))
+        res_list = list(result)
+        assert len(res_list) == 1
+        assert "engine_works" == res_list[0][0] 
+
+{% endif %}

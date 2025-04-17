@@ -1,0 +1,47 @@
+---
+# Questions for usage of databases
+
+# the main menu
+SelectDatabasesFeatures:
+  when: "{{ template_profile != 'minimum' }}"
+  type: yaml
+  default: |-
+    {% if template_profile == 'recommended' %}
+      [AddSQLite_flag, AddPostgres_flag, AddSQLAlchemy_flag]
+    {%- else -%}
+      []
+    {%- endif %}
+  help: Select databases to be included (dependencies, availability in Actions, tests and code)
+  multiselect: true
+  choices:
+    Use SQLite:
+      value: AddSQLite_flag
+      # validator: "{% if something != 'AnotherThing' %}BlaBla{% endif %}"
+    Use PostgreSQL:
+      value: AddPostgres_flag
+      # validator: "{% if something != 'AnotherThing' %}BlaBla{% endif %}"
+    Use SQLAlchemy:
+      value: AddSQLAlchemy_flag
+      # validator: "{% if something != 'AnotherThing' %}BlaBla{% endif %}"
+    
+
+# computed features
+AddDatabases:
+  type: bool
+  default: "{{
+    'AddSQLite_flag' in SelectDatabasesFeatures
+    or 'AddSQLAlchemy_flag' in SelectDatabasesFeatures
+    or 'AddPostgres_flag' in SelectDatabasesFeatures }}"
+  when: false
+AddSQLite:
+  type: bool
+  default: "{{ 'AddSQLite_flag' in SelectDatabasesFeatures }}"
+  when: false
+AddSQLAlchemy:
+  type: bool
+  default: "{{ 'AddSQLAlchemy_flag' in SelectDatabasesFeatures }}"
+  when: false
+AddPostgres:
+  type: bool
+  default: "{{ 'AddPostgres_flag' in SelectDatabasesFeatures }}"
+  when: false

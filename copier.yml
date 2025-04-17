@@ -15,6 +15,10 @@
 !include copier/questions/package_details.yml
 
 ---
+# databases details
+!include copier/questions/databases.yml
+
+---
 # code quality features
 !include copier/questions/features_code_quality.yml
 
