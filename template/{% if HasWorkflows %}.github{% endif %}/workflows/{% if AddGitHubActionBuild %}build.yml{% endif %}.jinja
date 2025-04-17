@@ -13,6 +13,21 @@ jobs:
   build:
     name: Build for (${{ '{{ ' -}} matrix.python-version }}, ${{ '{{ ' -}} matrix.os }})
     runs-on: ${{ '{{ ' -}} matrix.os }}
+{%- if AddPostgres %}
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres_{{package_name}}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+{%- endif %}
+
     strategy:
       fail-fast: true
       matrix:
@@ -20,6 +35,14 @@ jobs:
         python-version: ['3.10', '3.11', '3.12']
     steps:
       - uses: actions/checkout@v4
+{%- if AddPostgres %}
+      - name: Set up Postgres Usage
+        run: |
+          echo "localhost:5432:*:postgres:postgres_{{package_name}}" >> $HOME/.pgpass
+          chmod 0600 $HOME/.pgpass
+          sudo apt-get install -y postgresql-client
+          psql -c 'create database _test_{{package_name}};' -U postgres --host localhost
+{%- endif %}
       - name: Set up Python ${{ '{{ ' -}} matrix.python-version }}
         uses: actions/setup-python@v5
         with:

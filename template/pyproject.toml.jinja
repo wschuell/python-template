@@ -28,7 +28,10 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
-dependencies = []
+dependencies = [
+{%- if AddPostgres %}psycopg2{%- endif %}
+{%- if AddSQLAlchemy %}sqlalchemy{%- endif %}
+]
 description = "{{ package_short_description|replace('\"', '\\\"') }}"
 keywords = [
 {%- for item in keywords.split(',') -%}
