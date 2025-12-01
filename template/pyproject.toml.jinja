@@ -35,6 +35,9 @@ dependencies = [
 {%- endif %}
 {%- if AddDuckDB %}
     "duckdb",
+{%- if AddSQLAlchemy %}
+    "duckdb-engine",
+{%- endif %}
 {%- endif %}
 {%- if AddSQLAlchemy %}
     "sqlalchemy",
