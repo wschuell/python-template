@@ -24,11 +24,11 @@ def dbtype(request):
 @pytest.fixture(params=dbtype_list)
 def testengine(request):
     if request.param in ['sqlite','duckdb']:
-        url= "{request.param}:///_test_{{package_name}}.{request.param}.db"
+        url= f"{request.param}:///_test_{{package_name}}.{request.param}.db"
     elif request.param =='postgres':
-        url= "postgresql+psycopg2://postgres@localhost:5432/_test_{{package_name}}"
+        url= f"postgresql+psycopg2://postgres@localhost:5432/_test_{{package_name}}"
     else:
-        url= "{request.param}:///_test_{{package_name}}.{request.param}"
+        url= f"{request.param}:///_test_{{package_name}}.{request.param}"
     return create_engine(url)
 
 {%- endif %}
