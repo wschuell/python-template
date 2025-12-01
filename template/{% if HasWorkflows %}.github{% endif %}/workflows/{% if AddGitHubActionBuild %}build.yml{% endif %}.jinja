@@ -31,8 +31,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: ['ubuntu-latest', 'macos-latest', 'windows-latest']
-        python-version: ['3.10', '3.11', '3.12']
+        os: ['ubuntu-latest'{% if not LimitTestMatrix %}, 'macos-latest', 'windows-latest'{% endif %}]
+        python-version: [{% if not LimitTestMatrix %}'3.10', '3.11', {% endif %}'3.12']
     steps:
       - uses: actions/checkout@v4
 {%- if AddPostgres %}

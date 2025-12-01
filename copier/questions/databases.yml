@@ -17,6 +17,9 @@ SelectDatabasesFeatures:
     Use SQLite:
       value: AddSQLite_flag
       # validator: "{% if something != 'AnotherThing' %}BlaBla{% endif %}"
+    Use DuckDB:
+      value: AddDuckDB_flag
+      # validator: "{% if something != 'AnotherThing' %}BlaBla{% endif %}"
     Use PostgreSQL:
       value: AddPostgres_flag
       # validator: "{% if something != 'AnotherThing' %}BlaBla{% endif %}"
@@ -36,6 +39,10 @@ AddDatabases:
 AddSQLite:
   type: bool
   default: "{{ 'AddSQLite_flag' in SelectDatabasesFeatures }}"
+  when: false
+AddDuckDB:
+  type: bool
+  default: "{{ 'AddDuckDB_flag' in SelectDatabasesFeatures }}"
   when: false
 AddSQLAlchemy:
   type: bool
