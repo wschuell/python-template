@@ -6,6 +6,8 @@ import sqlalchemy
 from sqlalchemy import create_engine, text
 {% endif %}
 
+import {{ package_name }}
+
 #### Parameters
 dbtype_list = [
 {% if AddSQLite %}

@@ -23,6 +23,9 @@ SelectPublishReleaseFeatures:
     Zenodo integration instructions:
       value: AddZenodo_flag
       # validator: "{% if something != 'AnotherThing' %}BlaBla{% endif %}"
+    PyPI:
+      value: AddPyPI_flag
+      # validator: "{% if something != 'AnotherThing' %}BlaBla{% endif %}"
 
 # Sub-menus
 # split AddCitation --> enable_citation_file and enable_cffconvert
@@ -62,4 +65,8 @@ AddChangeLog:
 AddZenodo:
   type: bool
   default: "{{ 'AddZenodo_flag' in SelectPublishReleaseFeatures }}"
+  when: false
+AddPyPI:
+  type: bool
+  default: "{{ 'AddPyPI_flag' in SelectPublishReleaseFeatures }}"
   when: false
