@@ -1,0 +1,43 @@
+{% if AddSQLite %}
+import sqlite3
+{% endif %}
+{% if AddSQLAlchemy %}
+from sqlalchemy import (
+    create_engine,
+    text,
+)
+from .sql_model import Base
+{% endif %}
+
+
+class {{package_name|capitalize}}:
+    """Wrapper class."""
+
+{% if AddSQLAlchemy %}
+    def __init__(
+        self,
+        engine_url="sqlite:///piebm.db",
+        engine=None,
+        **kwargs,
+    ):
+        self.engine_url = engine_url
+        if engine is not None:
+            self.engine=engine
+        else:
+            self.init_engine()
+        Base.metadata.create_all(self.engine)
+
+    def init_engine(self )-> None:
+        """Initiating the SQLAlchemy engine if not existing."""
+        if not hasattr(self, "engine"):
+            if self.engine_url.startswith("sqlite:"):
+                connect_args = {
+                    "detect_types": sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES
+                }
+            else:
+                connect_args = {}
+            self.engine_cfg = {
+                "url": self.engine_url, "connect_args": connect_args,
+            }
+            self.engine = create_engine(**self.engine_cfg)
+{% endif %}
