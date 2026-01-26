@@ -30,7 +30,7 @@ classifiers = [
 ]
 dependencies = [
 {%- if AddPostgres %}
-    "psycopg2",
+    "psycopg",
     "asyncpg",
 {%- endif %}
 {%- if AddDuckDB %}

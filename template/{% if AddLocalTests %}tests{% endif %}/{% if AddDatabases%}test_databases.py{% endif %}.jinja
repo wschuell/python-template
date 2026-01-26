@@ -29,7 +29,7 @@ def testengine(request):
     if request.param in ['sqlite','duckdb']:
         url= f"{request.param}:///_test_{{package_name}}.{request.param}.db"
     elif request.param =='postgres':
-        url= f"postgresql+psycopg2://{POSTGRES_USER}@localhost:5432/_test_{{package_name}}"
+        url= f"postgresql+psycopg://{POSTGRES_USER}@localhost:5432/_test_{{package_name}}"
     else:
         url= f"{request.param}:///_test_{{package_name}}.{request.param}"
     return create_engine(url)
