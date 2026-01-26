@@ -16,7 +16,7 @@ class {{package_name|capitalize}}:
 {% if AddSQLAlchemy %}
     def __init__(
         self,
-        engine_url="sqlite:///piebm.db",
+        engine_url="sqlite:///{{ package_name }}.db",
         engine=None,
         **kwargs,
     ):

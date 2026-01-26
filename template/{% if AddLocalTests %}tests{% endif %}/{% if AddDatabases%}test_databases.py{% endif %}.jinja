@@ -1,5 +1,6 @@
 """Tests for the {{ package_name }} database connections."""
 
+import os
 import pytest
 {%- if AddSQLAlchemy %}
 import sqlalchemy
@@ -15,6 +16,8 @@ dbtype_list = [
 ]
 
 
+POSTGRES_USER=os.environ.get('PYTEST_POSTGRES_USER','postgres')
+
 @pytest.fixture(params=dbtype_list)
 def dbtype(request):
     return request.param
@@ -26,7 +29,7 @@ def testengine(request):
     if request.param in ['sqlite','duckdb']:
         url= f"{request.param}:///_test_{{package_name}}.{request.param}.db"
     elif request.param =='postgres':
-        url= f"postgresql+psycopg2://postgres@localhost:5432/_test_{{package_name}}"
+        url= f"postgresql+psycopg2://{POSTGRES_USER}@localhost:5432/_test_{{package_name}}"
     else:
         url= f"{request.param}:///_test_{{package_name}}.{request.param}"
     return create_engine(url)
