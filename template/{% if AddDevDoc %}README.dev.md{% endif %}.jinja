@@ -18,9 +18,9 @@ python -m pip install --upgrade pip setuptools
 # install {{ package_name }} as an editable package
 python -m pip install --no-cache-dir --editable .
 # install development dependencies
-python -m pip install --no-cache-dir --editable .[dev]
+python -m pip install --no-cache-dir --editable . --group dev
 # install documentation dependencies only
-python -m pip install --no-cache-dir --editable .[docs]
+python -m pip install --no-cache-dir --editable . --group docs
 ```
 
 Afterwards check that the install directory is present in the `PATH` environment variable.
@@ -65,7 +65,7 @@ coverage report
 {%- if AddLinting -%}
 ## Running linters locally
 
-For linting and sorting imports we will use [ruff](https://beta.ruff.rs/docs/). Running the linters requires an
+For linting and sorting imports we will use [ruff](https://docs.astral.sh/ruff/). Running the linters requires an
 activated virtual environment with the development tools installed.
 
 ```shell
@@ -76,7 +76,11 @@ ruff check .
 ruff check . --fix
 ```
 
-To fix readability of your code style you can use [yapf](https://github.com/google/yapf).
+It also provides a command to fix readability of your code style:
+
+```shell
+ruff format .
+```
 {%- endif -%}
 
 {%- if AddPreCommit -%}
@@ -86,6 +90,26 @@ You can enable automatic linting with `ruff` on commit by enabling the git hook 
 git config --local core.hooksPath .githooks
 ```
 {%- endif -%}
+
+{% if AddTyping %}
+## Type checking
+
+{% if SelectTypeChecker == 'pyright' -%}
+We use [pyright](https://microsoft.github.io/pyright/) for type checking.
+
+```shell
+pyright
+```
+
+{% endif -%}
+{% if SelectTypeChecker == 'mypy' -%}
+We use [mypy](http://mypy-lang.org/) for type checking.
+
+```shell
+mypy
+```
+{% endif -%}
+{% endif -%}
 
 ## Generating the API docs
 
