@@ -3,7 +3,9 @@
 import os
 import pytest
 import {{ package_name }}
-
+{%- if AddSQLAlchemy %}
+from sqlalchemy import create_engine, text
+{%- endif %}
 
 {%- if AddSQLAlchemy %}
 def test_connect(testengine):
