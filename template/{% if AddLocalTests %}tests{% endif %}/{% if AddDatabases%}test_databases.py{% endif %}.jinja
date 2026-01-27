@@ -2,44 +2,8 @@
 
 import os
 import pytest
-{%- if AddSQLAlchemy %}
-import sqlalchemy
-from sqlalchemy import create_engine, text
-{%- endif %}
 import {{ package_name }}
 
-#### Parameters
-dbtype_list = [
-{% if AddSQLite %}"sqlite",{% endif %}
-{% if AddPostgres %}"postgres",{% endif %}
-{% if AddDuckDB %}"duckdb",{% endif %}
-]
-
-
-POSTGRES_USER=os.environ.get('PYTEST_POSTGRES_USER','postgres')
-
-@pytest.fixture(params=dbtype_list)
-def dbtype(request):
-    return request.param
-
-
-{%- if AddSQLAlchemy %}
-@pytest.fixture(params=dbtype_list)
-def testengine(request):
-    if request.param in ['sqlite','duckdb']:
-        url= f"{request.param}:///_test_{{package_name}}.{request.param}.db"
-    elif request.param =='postgres':
-        url= f"postgresql+psycopg://{POSTGRES_USER}@localhost:5432/_test_{{package_name}}"
-    else:
-        url= f"{request.param}:///_test_{{package_name}}.{request.param}"
-    return create_engine(url)
-
-{%- endif %}
-
-
-##############
-
-#### Tests
 
 {%- if AddSQLAlchemy %}
 def test_connect(testengine):

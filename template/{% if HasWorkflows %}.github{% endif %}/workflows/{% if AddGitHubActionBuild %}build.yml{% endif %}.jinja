@@ -41,7 +41,7 @@ jobs:
           echo "localhost:5432:*:postgres:postgres_{{package_name}}" >> $HOME/.pgpass
           chmod 0600 $HOME/.pgpass
           sudo apt-get install -y postgresql-client
-          psql -c 'create database _test_{{package_name}};' -U postgres --host localhost
+          psql -c 'create database _test_{{package_name}}_postgres;' -U postgres --host localhost
 {%- endif %}
       - name: Set up Python ${{ '{{ ' -}} matrix.python-version }}
         uses: actions/setup-python@v6
