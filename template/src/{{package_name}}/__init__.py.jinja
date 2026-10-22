@@ -7,3 +7,5 @@ logging.getLogger(__name__).addHandler(logging.NullHandler())
 __author__ = "{{ full_name|replace('\"', '\\\"') }}"
 __email__ = "{{ email }}"
 __version__ = "{{ version }}"
+
+from .{{package_name}} import {{package_name|capitalize}}
